@@ -30,21 +30,47 @@ export class CartComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.cars = await this.getCars('car');
-    //this.createCar('car', {make: 'Tesla', model: 'X'});
+    await this.refresh();
   }
 
-  // getCars('car);
+  async refresh() {
+    this.cars = await this.getCars('car');
+  }
+
   async getCars(path: string) {
     const resp = await this.http.get(path);
-    console.log('resp from getCars()', resp);
     return resp;
   }
 
-  async createCar(path: string, payload: any) {
-    const resp = await this.http.post(path, payload);
-    console.log('from createCar resp: ', resp);
+  async createCar() {
+    const car = {
+      make: null,
+      model: null,
+      year: null
+    };
+    const resp = await this.http.post('car', car);
+    if (resp) {
+     this.cars.unshift(resp);
+    } else {
+      this.toastService.showToast('success', 3000, 'Car create failed!');
+    }
+    return resp;
   }
 
+  async updateCar(car: any) {
+    const resp = await this.http.put(`car/id/${car.id}`, car);
+    if (resp) {
+      this.toastService.showToast('success', 3000, 'Car updated successfully');
+    }
+  }
+
+  async removeCar(car: any, index: number) {
+    const resp = await this.http.delete(`car/id/${car.id}`);
+    if (resp) {
+      this.refresh();
+    } else {
+      this.toastService.showToast('danger', 3000, 'Delete car failed!');
+    }
+  }
 
 }

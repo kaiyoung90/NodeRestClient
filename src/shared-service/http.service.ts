@@ -13,30 +13,31 @@ export class HttpService {
       this.apiURL = environment.apiURL;
   }
 
-  test() {
-    console.log('from http service testing......');
-  }
-
   // get('car');
   async get(path: string) {
     const resp = await this.http.get(this.apiURL + path, this.headers).toPromise();
-    console.log('resp from http service get() resp: ', resp);
     return resp.json();
   }
-
   // post('car', { make: 'Nissan', model: '350z'});
   async post(path: string, payload: any) {
     const resp = await this.http.post(this.apiURL + path, payload, this.headers).toPromise();
-    console.log('from http service post() resp: ', resp.json());
     return resp.json();
   }
 
-  put() {
-
+  // put('car/id/1',, { make: 'Toyota', model: 'Celica'});
+  async put(path: string, payload: any) {
+    const resp = await this.http.put(this.apiURL + path, payload, this.headers).toPromise();
+    return resp.json();
   }
 
-  delete() {
+  async delete(path: string) {
+    const resp = await this.http.delete(this.apiURL + path, this.headers).toPromise();    return resp.json();
+  }
 
+  // logout();
+  async logout() {
+    const resp: any = await this.http.get(this.apiURL + 'user/logout', this.headers).toPromise();
+    return resp.json();
   }
 
   get headers() {
