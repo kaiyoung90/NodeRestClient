@@ -21,7 +21,7 @@ export class CartComponent implements OnInit {
 
   bikes: Array<IBike> = [];
   myName = '';
-  cars: [];
+  cars = [];
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
